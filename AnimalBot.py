@@ -1,6 +1,8 @@
 import requests
 import time
 import config
+# для картинок с медведями
+import random
 
 API_URL = 'https://api.telegram.org/bot'
 BOT_TOKEN = config.TOKEN
@@ -9,10 +11,12 @@ ERROR_TEXT_CAT = 'тут должен быть котик :('
 ERROR_TEXT_FOX = 'тут должна быть лисичка :('
 ERROR_TEXT_DOG = 'тут должна быть собака :('
 ERROR_TEXT_BIRD = 'тут должна быть птичка :('
+ERROR_TEXT_BEAR = 'тут должен быть медведь :('
 API_URL_CAT = 'https://api.thecatapi.com/v1/images/search'
 API_URL_FOX = 'https://randomfox.ca/floof/'
 API_URL_DOG = 'https://random.dog/woof.json'
 API_URL_BIRD = 'https://shibe.online/api/birds'
+API_URL_BEAR = 'https://placebear.com/'
 
 offset = -2
 counter = 0
@@ -79,6 +83,13 @@ while True:
                     animal_link = animal_response.json()[0]
                     sendPhotoOrVideo(animal_link, chat_id, API_URL, BOT_TOKEN)
                 else:
-                    requests.get(f'{API_URL}{BOT_TOKEN}/sendMessage?chat_id={chat_id}&text={ERROR_TEXT_BIRD}' )                             
+                    requests.get(f'{API_URL}{BOT_TOKEN}/sendMessage?chat_id={chat_id}&text={ERROR_TEXT_BIRD}' )  
+            elif chat_text == '/bear':
+                animal_link = API_URL_BEAR + str(random.randint(300, 500)) + '/' + str(random.randint(300, 500))
+                animal_response = requests.get(animal_link)
+                if animal_response.status_code == 200:
+                    sendPhotoOrVideo(animal_link, chat_id, API_URL, BOT_TOKEN)
+                else:
+                    requests.get(f'{API_URL}{BOT_TOKEN}/sendMessage?chat_id={chat_id}&text={ERROR_TEXT_BEAR}' ) 
     #time.sleep(1)
     counter += 1

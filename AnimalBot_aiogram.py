@@ -3,16 +3,20 @@ import config
 from aiogram import Bot, Dispatcher
 from aiogram.filters import Command
 from aiogram.types import Message
+# Для картинок с медведями
+import random
 
 BOT_TOKEN = config.TOKEN
 ERROR_TEXT_CAT = 'тут должен быть котик :('
 ERROR_TEXT_FOX = 'тут должна быть лисичка :('
 ERROR_TEXT_DOG = 'тут должна быть собака :('
 ERROR_TEXT_BIRD = 'тут должна быть птичка :('
+ERROR_TEXT_BEAR = 'тут должен быть медведь :('
 API_URL_CAT = 'https://api.thecatapi.com/v1/images/search'
 API_URL_FOX = 'https://randomfox.ca/floof/'
 API_URL_DOG = 'https://random.dog/woof.json'
 API_URL_BIRD = 'https://shibe.online/api/birds'
+API_URL_BEAR = 'https://placebear.com/'
 
 animal_response: requests.Response
 animal_link: str
@@ -77,6 +81,16 @@ async def process_bird(message: Message):
             await message.answer_photo(animal_link)
     else:
         await message.answer(ERROR_TEXT_FOX)
+
+# Обработка команды /bear
+@dp.message(Command(commands=['bear']))
+async def process_bear(message: Message):
+    animal_link = API_URL_BEAR + str(random.randint(300, 500)) + '/' + str(random.randint(300, 500))
+    animal_response = requests.get(animal_link)
+    if animal_response.status_code == 200:
+        await message.answer_photo(animal_link)
+    else:
+        await message.answer(ERROR_TEXT_BEAR)
 
 
 # Запускаем поллинг
