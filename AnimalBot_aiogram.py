@@ -1,7 +1,7 @@
 import requests
 import config
 from aiogram import Bot, Dispatcher
-from aiogram.filters import Command
+from aiogram.filters import Command, CommandStart
 from aiogram.types import Message
 # Для картинок с медведями
 import random
@@ -25,6 +25,14 @@ animal_link_format: str
 # Создаем объекты бота и диспетчера
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
+
+# Обработчик команды /start
+@dp.message(CommandStart())
+async def process_start_command(message: Message):
+    await message.answer(
+        'Привет!\nЯ - бот, который бесконено может показывать картинки разных животных\n'
+        'Выбери животное в списке команд и получишь картинку :)'
+    )
 
 # Обработка команды /cat
 @dp.message(Command(commands=['cat']))

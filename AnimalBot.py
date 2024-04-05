@@ -56,6 +56,10 @@ while True:
             offset = result['update_id']
             chat_id = result['message']['from']['id']
             chat_text = result['message']['text']
+            # Обрабтка команду /start
+            if chat_text == '/start':
+                start_text = 'Привет!\nЯ - бот, который бесконено может показывать картинки разных животных\nВыбери животное в списке команд и получишь картинку :)'
+                requests.get(f'{API_URL}{BOT_TOKEN}/sendMessage?chat_id={chat_id}&text={start_text}')
             if chat_text == '/cat':
                 animal_response = requests.get(API_URL_CAT)
                 if animal_response.status_code == 200:
